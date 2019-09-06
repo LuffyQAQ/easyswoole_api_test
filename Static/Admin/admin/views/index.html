@@ -1,0 +1,151 @@
+<title>统计中心</title>
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">数据概况</a>
+    <a><cite>统计中心</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-sm6 layui-col-md3">
+      <div class="layui-card">
+        <div class="layui-card-header">
+          订单量
+          <span class="layui-badge layui-bg-blue layuiadmin-badge">今日</span>
+        </div>
+        <div class="layui-card-body layuiadmin-card-list">
+          <p class="layuiadmin-big-font" id="todateorder"></p>
+          <p class="todate"></p>
+        </div>
+      </div>
+    </div>
+    <div class="layui-col-sm6 layui-col-md3">
+      <div class="layui-card">
+        <div class="layui-card-header">
+          订单量
+          <span class="layui-badge layui-bg-cyan layuiadmin-badge">本月</span>
+        </div>
+        <div class="layui-card-body layuiadmin-card-list">
+          <p class="layuiadmin-big-font" id="montheorder"></p>
+          <p class="this-month"></p>
+        </div>
+      </div>
+    </div>
+    <div class="layui-col-sm6 layui-col-md3">
+      <div class="layui-card">
+        <div class="layui-card-header">
+          收入量
+          <span class="layui-badge layui-bg-green layuiadmin-badge">今日</span>
+        </div>
+        <div class="layui-card-body layuiadmin-card-list">
+
+          <p class="layuiadmin-big-font" id="todatemoney"></p>
+          <p class="todate"></p>
+        </div>
+      </div>
+    </div>
+    <div class="layui-col-sm6 layui-col-md3">
+      <div class="layui-card">
+        <div class="layui-card-header">
+          收入量
+          <span class="layui-badge layui-bg-orange layuiadmin-badge">本月</span>
+        </div>
+        <div class="layui-card-body layuiadmin-card-list">
+
+          <p class="layuiadmin-big-font" id="monthmoney"></p>
+          <p class="this-month"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    // layui.use('sample', layui.factory('sample'));
+    // var $ = layui.$;
+    // var adminSession = layui.data('layuiAdmin')['adminSession'];
+    // // var getCountOrder='/Api/Admin/Order/getCountOrder?adminSession=' + adminSession;
+    // // var getTotalMoney='/Api/Admin/Order/getTotalMoney?adminSession=' + adminSession;
+    // //日期
+    // var myDate = new Date;
+    // var week = myDate.getDay();
+    // var weeks = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+    // var year = myDate.getFullYear(); //获取当前年
+    // var mon = timeAdd(parseInt((myDate.getMonth())+1).toString()); //获取当前月
+    // var date =timeAdd(myDate.getDate().toString()); //获取当前日
+    // function timeAdd(str){
+    //     if(str.length!=2){str='0'+str;}
+    //     return str;
+    // }
+    // function getFirstMonthDay(year, month){
+    //     var   firstdate = year + '-' + month + '-01';
+    //     return firstdate;
+    // }
+    // function AndLastMonthDay(year, month){
+    //     var  day = new Date(year,month,0);
+    //     var lastdate = year + '-' + month + '-' + day.getDate();
+    //     return lastdate;
+    // }
+    // function GetDateStr(AddDayCount) {
+    //     var dd = new Date();
+    //     dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
+    //     var y = dd.getFullYear();
+    //     var m = dd.getMonth()+1;//获取当前月份的日期
+    //     var d = dd.getDate();
+    //     return y+""+m+""+d;
+    // }
+    //
+    // $(".this-month").html(year+"/"+mon);
+    // $(".todate").html(year+"/"+mon+"/"+date+" "+weeks[week]);
+    //
+    // var startTime=getFirstMonthDay(year,mon);
+    // var endTime=AndLastMonthDay(year,mon);
+    // // $().html(ordernum(startTime,endTime);
+    // var todate=year+mon+date;
+    // var tomorrow=GetDateStr(1);
+    // console.log(todate,tomorrow);
+    // allmoney(startTime,endTime,30);
+    // allmoney(todate,tomorrow,1);
+    // ordernum(startTime,endTime,30);
+    // ordernum(todate,tomorrow,1);
+    // //统计订单数
+    // function ordernum(startTime,endTime,howdate){
+    //     $.ajax({
+    //         type: 'get',
+    //         url:getCountOrder,
+    //         data:{"startTime":startTime,"endTime":endTime,},
+    //         dataType:'json',
+    //         success:function (obj) {
+    //             if(howdate==1){
+    //                 $('#todateorder').html(obj.result);
+    //             }else{
+    //                 $('#montheorder').html(obj.result);
+    //             }
+    //
+    //         },
+    //         error:function () {
+    //
+    //         }
+    //     })
+    // }
+    //获取金额统计
+    // function allmoney(startTime,endTime,howdate) {
+    //     $.ajax({
+    //         type: 'get',
+    //         url: getTotalMoney,
+    //         data: {"startTime": startTime, "endTime": endTime,},
+    //         dataType: 'json',
+    //         success: function (obj) {
+    //             if(howdate==1){
+    //                 $('#todatemoney').html("¥"+(obj.result/100).toFixed(2));
+    //             }else{
+    //                 $('#monthmoney').html("¥"+(obj.result/100).toFixed(2));
+    //             }
+    //         },
+    //         error: function () {
+    //
+    //         }
+    //     })
+    // }
+</script>
+

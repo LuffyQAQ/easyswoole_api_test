@@ -1,0 +1,66 @@
+<style>
+    .layui-breadcrumb{
+        visibility: visible;
+    }
+    .layui-select-title{
+        margin-left: 25% !important;
+    }
+    .layui-layedit-tool .layui-icon{
+        width: 30px;
+    }
+    .conn-itest{
+        margin-left: 5%;
+    }
+    .layui-col-md3{
+        margin-top: 2%;
+        float: left;
+    }
+    .layui-col-md9{
+        margin-top: 1%;
+        float: left;
+        width: 75%;
+    }
+</style>
+<div class="layui-card layadmin-header">
+        <div class="layui-breadcrumb" lay-filter="breadcrumb">
+            <a lay-href="">主页</a>
+            <a>&nbsp;/&nbsp;<cite id="pageTempParam-title"></cite></a>
+        </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <!-- 搜索区域 -->
+                    <div class="admin-header-box test-table-reload-btn">
+
+                            <div class="layui-input-inline ">
+                                <input type="text" name="keyword" autocomplete="off" class="layui-input needKeyword">
+                            </div>
+
+                            <div class="layui-input-inline ">
+                                <button class="layui-btn" data-type="reload">搜索</button>
+                            </div>
+
+                        <div class="layui-input-inline" id="add">
+                            <button class="layui-btn layui-btn-sm"><i class="layui-icon">&#xe654;</i> 新增</button>
+                        </div>
+                    </div>
+
+
+                    <table class="layui-hide" id="test-table-reload" lay-filter="user"></table>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#pageTempParam-title").html(pageTempParam.title);
+        $(".needKeyword").attr('placeholder',pageTempParam.keyword);
+    });
+</script>

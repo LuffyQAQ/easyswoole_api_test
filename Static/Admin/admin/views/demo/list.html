@@ -1,0 +1,228 @@
+<script>
+    let admin;
+    let view;
+    let form;
+    let table;
+    layui.use(['app', 'admin', 'view'], function() {
+        let $ = layui.$;
+        $("#js-load-title").html('系统设置');//标题
+        $("#js-load-Controller").html('系统设置');//控制器
+        $("#js-load-action").html('用户列表');//方法
+        $("#js-load-table-title").html('用户列表');//方法
+        $("#keyword-placeholder").attr('placeholder', '帐号');//搜索框
+        admin = layui.admin;
+        view = layui.view;
+        let app = layui.app;
+        let controller = app.controller;
+        let model = app.model;
+        let field = app.field;
+        let toolbar = app.toolbar;
+        let formField = app.formField;
+        let fields = [
+            field.setKey('adminAccount').setTitle('帐号').clear(),
+            field.setKey('adminName').setTitle('名称').clear(),
+            field.setKey('adminLastLoginTime').setTitle('最后一次登录时间').setTemplet(function(data) {
+                var str = '';
+                if (data.adminLastLoginTime) {
+                    str = intToDate(data.adminLastLoginTime);
+                }
+                return str;
+            }).clear(),
+            field.setKey('adminLastLoginIp').setTitle('最后一次登录Ip').clear(),
+            toolbar.setWidth(180).setToolbar('#toolBar').clear()
+        ];
+        let formFields = [
+            formField.text().setName('adminAccount').setTitle('帐号').setDisabled(true).exec(),
+            formField.text().setName('adminName').setTitle('名称').exec(),
+            formField.password().setName('adminPassword').setTitle('密码').exec(),
+        ];
+
+        let adminSession = layui.data('layuiAdmin')['adminSession'];
+        model.setField(fields);
+        model.setListUrl('/Api/admin/AdminUser/getAll?adminSession=' + adminSession);
+        model.setAddUrl('/Api/admin/AdminUser/add?adminSession=' + adminSession);
+        model.setUpdateUrl('/Api/admin/AdminUser/update?adminSession=' + adminSession);
+        model.setDeleteUrl('/Api/admin/AdminUser/delete?adminSession=' + adminSession);
+        model.setId('adminId');
+        controller.init(function() {
+            controller.setModel(model).renderTable();
+            controller.search();
+            controller.setFormFields(formFields);
+
+            form = controller.getForm();
+            table = controller.getTable();
+            form.on('submit(add)', function() {
+                popup('添加用户', 'demo/add', function(index) {
+
+                    form.render();
+
+                    form.on('submit(save)', function(data) {
+                        let params = data.field;
+
+                        params.adminAccount = params.adminAccount.trim();
+                        params.adminName = params.adminName.trim();
+                        params.adminPassword = params.adminPassword.trim();
+                        if (params.adminAccount === '') {
+                            alert('请填写帐号');
+                            return false;
+                        }
+                        if (params.adminName === '') {
+                            alert('请填写名称');
+                            return false;
+                        }
+                        if (params.adminPassword === '') {
+                            alert('请填写密码');
+                            return false;
+                        }
+                        if (params.adminPassword.length < 6) {
+                            alert('密码长度不小于6位');
+                            return false;
+                        }
+                        if (params.adminPassword.length > 16) {
+                            alert('密码长度不超过16位');
+                            return false;
+                        }
+
+                        admin.req({
+                            url: '/Api/admin/AdminUser/add',
+                            data: params,
+                            success: function () {
+                                layer.msg('添加成功', { icon: 1, time: 1000 }, function () {
+                                    table.reload('main-table', { page: { curr: 1 } });
+                                    layer.close(index); //执行关闭
+                                });
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                layer.msg(jqXHR.msg);
+                            }
+                        });
+
+                    });
+                });
+            });
+
+            // 绑定表格工具栏事件
+            controller.onTable([{
+                event: 'edit',
+                callBack: function (data) {
+                    popup('修改用户', 'demo/edit', function(index) {
+                        data.adminPassword = '';
+                        form.val('form-edit', data);
+                        form.render();
+
+                        form.on('submit(save)', function(data) {
+                            let params = data.field;
+
+                            params.adminName = params.adminName.trim();
+                            params.adminPassword = params.adminPassword.trim();
+                            if (params.adminName === '') {
+                                alert('请填写名称');
+                                return false;
+                            }
+                            if (params.adminPassword === '') {
+                                delete params.adminPassword;
+                            } else {
+                                if (params.adminPassword.length < 6) {
+                                    alert('密码长度不小于6位');
+                                    return false;
+                                }
+                                if (params.adminPassword.length > 16) {
+                                    alert('密码长度不超过16位');
+                                    return false;
+                                }
+                            }
+
+                            admin.req({
+                                url: '/Api/admin/AdminUser/update',
+                                data: params,
+                                success: function () {
+                                    layer.msg('修改成功', { icon: 1, time: 1000 }, function () {
+                                        table.reload('main-table', { page: { curr: 1 } });
+                                        layer.close(index); //执行关闭
+                                    });
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    layer.msg(jqXHR.msg);
+                                }
+                            });
+
+                        });
+                    });
+                }
+            }, {
+                event: 'remove',
+                callBack: function (data) {
+                    controller.remove(data);
+                }
+            }]);
+        });
+    });
+
+    function popup(title, path, callBack) {
+        admin.popup({
+            title: title, area: ['60%', '70%'], id: 'LAY-popup-data',
+            success: function (layero, index) {
+                view(this.id).render(path).done(function () {
+                    callBack(index);
+                });
+            }
+        });
+    }
+
+</script>
+
+<script type="text/html" id="toolBar">
+    <a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="remove">删除</a>
+</script>
+
+
+<title id="js-load-title">加载中</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="/">主页</a>
+        <a><cite id="js-load-Controller">加载中</cite></a>
+        <a><cite id="js-load-action">加载中</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <!-- 左侧栏目 -->
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">快速搜索</div>
+                <div class="layui-card-body">
+                    <form class="layui-form layui-form-pane" lay-filter="search" action="">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">关键词</label>
+                                <div class="layui-input-inline">
+                                    <input id="keyword-placeholder" type="text" name="keyword" value="" placeholder=""
+                                           autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline ">
+                                    <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i>搜索
+                                    </button>
+                                    <button class="layui-btn" lay-submit="" lay-filter="add"><i class="layui-icon">&#xe654;</i> 新增</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="layui-card">
+                <div class="layui-card-header" id="js-load-table-title">
+                    加载中
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-hide" id="main-table" lay-filter="LAY-main-table"></table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
