@@ -38,6 +38,7 @@ class AdminBase extends ApiBase
             return false;
         }
 
+
         return true;
 
     }
@@ -70,13 +71,14 @@ class AdminBase extends ApiBase
                 return null;
             }
             if($who->getIsForbid() === 1){
-                $this->writeJson(Status::CODE_FORBIDDEN,null,'该用户已被禁止登录');
+                $this->writeJson(Status::CODE_UNAUTHORIZED,null,'该用户已被禁止登录!');
                 return null;
             }
 
             $this->who = $who;
             return $who;
         }
+
         return $this->who;
     }
 }

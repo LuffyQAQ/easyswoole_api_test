@@ -178,7 +178,8 @@
         form.on('submit(LAY-user-login-submit)', function(obj){
             //请求登入接口
             admin.req({
-                url: ApiUriList.login //实际使用请改成服务端真实接口
+                url: ApiUriList.login, //实际使用请改成服务端真实接口
+                type: "post"
                 ,data: obj.field
                 ,done: function(res){
                     //请求成功后，写入 access_token

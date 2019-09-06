@@ -1,3 +1,60 @@
+<title id="js-load-title">加载中</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="/">主页</a>
+        <a><cite id="js-load-Controller">加载中</cite></a>
+        <a><cite id="js-load-action">加载中</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <!-- 左侧栏目 -->
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">快速搜索</div>
+                <div class="layui-card-body">
+                    <form class="layui-form layui-form-pane" lay-filter="search" action="">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">关键词</label>
+                                <div class="layui-input-inline">
+                                    <input id="keyword-placeholder" type="text" name="keyword" value="" placeholder=""
+                                           autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline ">
+                                    <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i>搜索
+                                    </button>
+                                    <button class="layui-btn" lay-submit="" lay-filter="add"><i class="layui-icon">&#xe654;</i> 新增</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="layui-card">
+                <div class="layui-card-header" id="js-load-table-title">
+                    加载中
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-hide" id="main-table" lay-filter="LAY-main-table"></table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script type="text/html" id="toolBar">
+    <a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="remove">删除</a>
+</script>
+
+
 <script>
     layui.use('app', function() {
         let $ = layui.$;
@@ -20,6 +77,13 @@
                 var str = '正常';
                 if(data.is_forbid){
                     str = '禁用';
+                }
+                return str;
+            }).clear(),
+            field.setKey('add_time').setTitle('添加时间').setTemplet(function(data) {
+                var str = '';
+                if (data.add_time) {
+                    str = intToDate(data.add_time);
                 }
                 return str;
             }).clear(),
@@ -115,59 +179,3 @@
         });
     });
 </script>
-
-<script type="text/html" id="toolBar">
-    <a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="edit">修改</a>
-    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="remove">删除</a>
-</script>
-
-
-<title id="js-load-title">加载中</title>
-
-<div class="layui-card layadmin-header">
-    <div class="layui-breadcrumb" lay-filter="breadcrumb">
-        <a lay-href="/">主页</a>
-        <a><cite id="js-load-Controller">加载中</cite></a>
-        <a><cite id="js-load-action">加载中</cite></a>
-    </div>
-</div>
-
-<div class="layui-fluid">
-    <div class="layui-row layui-col-space15">
-        <!-- 左侧栏目 -->
-        <div class="layui-col-md12">
-            <div class="layui-card">
-                <div class="layui-card-header">快速搜索</div>
-                <div class="layui-card-body">
-                    <form class="layui-form layui-form-pane" lay-filter="search" action="">
-                        <div class="layui-form-item">
-                            <div class="layui-inline">
-                                <label class="layui-form-label">关键词</label>
-                                <div class="layui-input-inline">
-                                    <input id="keyword-placeholder" type="text" name="keyword" value="" placeholder=""
-                                           autocomplete="off" class="layui-input">
-                                </div>
-                            </div>
-                            <div class="layui-inline">
-                                <div class="layui-input-inline ">
-                                    <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i>搜索
-                                    </button>
-                                    <button class="layui-btn" lay-submit="" lay-filter="add"><i class="layui-icon">&#xe654;</i> 新增</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="layui-card">
-                <div class="layui-card-header" id="js-load-table-title">
-                    加载中
-                </div>
-                <div class="layui-card-body">
-                    <table class="layui-hide" id="main-table" lay-filter="LAY-main-table"></table>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>

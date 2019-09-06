@@ -52,7 +52,7 @@ class Login extends AdminBase
             {
                 if($admin->getIsForbid() === 1)
                 {
-                    $this->writeJson(Status::CODE_BAD_REQUEST,null,'该账号已被禁止登录');
+                    $this->writeJson(Status::CODE_UNAUTHORIZED,null,'该账号已被禁止登录');
                 }else{
                     //更新用户的数据
                     $time = time();
@@ -68,7 +68,6 @@ class Login extends AdminBase
                     unset($admin['admin_password']);
                     $admin['admin_session'] = $sessionHash;
 
-                    var_dump($admin);
 
                     $this->response()->setCookie($this->sessionKey,$sessionHash,time() + 3600, '/');
                     $this->writeJson(Status::CODE_OK,$admin);
@@ -89,9 +88,10 @@ class Login extends AdminBase
     {
         $db = Mysql::defer('mysql');
         $model = new AdminModel($db);
-        $admin = $this->who();
+        $admin = $this->who;
         $suc = $model->logout($admin);
         if($suc){
+             $this->who = null;
              $this->writeJson(Status::CODE_OK,null,'退出成功');
         }else{
             $this->writeJson(Status::CODE_BAD_REQUEST,null,'退出失败');
@@ -99,6 +99,7 @@ class Login extends AdminBase
     }
     public function getInfo()
     {
-        $this->writeJson(Status::CODE_OK, $this->who(), '用户信息');
+
+        $this->writeJson(Status::CODE_OK, $this->who, '用户信息');
     }
 }
